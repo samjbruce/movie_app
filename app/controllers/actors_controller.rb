@@ -8,12 +8,15 @@ class ActorsController < ApplicationController
     actor = Actor.new(
       first_name: params[:first_name], 
       last_name: params[:last_name], 
-      known_for: params[:known_for]
-      gender: params[:gender]
+      known_for: params[:known_for],
+      gender: params[:gender],
       age: params[:age]
     )
-    actor.save
-    render json: actor
+    if actor.save
+      render json: actor
+    else 
+      render json: {error: actor.errors.full_messages}, status: :unprocessable_entity
+    end
   end
 
   def show
@@ -28,8 +31,11 @@ class ActorsController < ApplicationController
     actor.known_for = params[:known_for] || actor.known_for
     actor.gender = params[:gender] || actor.gender
     actor.age = params[:age] || actor.age
-    actor.save
-    render json: actor
+    if actor.save
+      render json: actor
+    else 
+      render json: {error: actor.errors.full_messages}, status: :unprocessable_entity
+    end
   end
 
   def destroy
