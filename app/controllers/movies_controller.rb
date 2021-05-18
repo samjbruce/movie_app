@@ -1,7 +1,11 @@
 class MoviesController < ApplicationController
 
   def index
-    movie = Movie.all
+    if params[:language]
+      movie = Movie.where('english = ?', 'true')
+    else 
+      movie = Movie.all 
+    end
     render json: movie
   end
 
