@@ -1,5 +1,7 @@
 class MoviesController < ApplicationController
-  before_action :authenticate_admin, except: [:index, :show]
+
+  before_action :authenticate_user, except: [:index, :show]
+
   def index
     if params[:language]
       movie = Movie.where('english = ?', 'true')
@@ -36,6 +38,7 @@ class MoviesController < ApplicationController
     movie.plot = params[:plot] || movie.plot
     movie.director = params[:director] || movie.director
     movie.english = params[:english] || movie.english
+    movie.image_url = params[:image_url] || movie.image_url
     if movie.save
       render json: movie
     else
